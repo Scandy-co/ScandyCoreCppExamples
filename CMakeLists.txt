@@ -11,8 +11,11 @@ project(ScandyCoreCppExamples)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-# And now add the Scandy Core directory
-set(ScandyCore_DIR "${ScandyCoreCppExamples_SOURCE_DIR}/dependencies/ScandyCore/")
+# if the ScandyCore_DIR is not set, set it to the default location
+if( NOT ScandyCore_DIR)
+  set(ScandyCore_DIR "${ScandyCoreCppExamples_SOURCE_DIR}/dependencies/ScandyCore/")
+endif()
+# And now add the Scandy Core package
 find_package(ScandyCore)
 
 # Scandy Core relies on C++14
