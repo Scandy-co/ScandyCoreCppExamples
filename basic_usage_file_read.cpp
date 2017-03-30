@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
   // Create the ScandyCore instance with a Visualizer window of 400x400
   auto core = IScandyCore::factoryCreate(400,400);
   if(!core) {
-    throw std::runtime_error("ERROR creating ScandyCore");
+    std::cerr << "ERROR creating ScandyCore" << std::endl;
+    return (int) scandy::core::Status::EXCEPTION_IN_HANDLER;;
   }
 
   // Add some callbacks.
@@ -43,13 +44,20 @@ int main(int argc, char *argv[]) {
   // get the view window
   auto viz = core->getVisualizer();
   if(!viz) {
-    throw std::runtime_error("ERROR creating ScandyCore");
+    std::cerr << "ERROR getting ScandyCore Visualizer" << std::endl;
+    return (int) scandy::core::Status::NO_VISUALIZER_FOUND;
   }
 
   // Read in a Royale rrf file from the command line
-  status = core->initializeScanner(ScannerType::FILE, argv[1]);
+  char *file_path = argv[1];
+  if( file_path == nullptr ){
+    std::cerr << "ERROR you must provide a path to the file" << std::endl;
+    return (int) scandy::core::Status::FILE_NOT_FOUND;;
+  }
+  status = core->initializeScanner(ScannerType::FILE, file_path);
   if(status != Status::SUCCESS) {
-    throw std::runtime_error("ERROR could not read test file");
+    std::cerr << "ERROR could not read test files" << std::endl;
+    return (int) status;
   }
 
   // Start SLAM to process the depth data in the rrf file.
@@ -61,14 +69,16 @@ int main(int argc, char *argv[]) {
 
     auto status = core->startScanning();
     if(status != Status::SUCCESS) {
-      throw std::runtime_error("ERROR starting scanner");
+      std::cerr << "ERROR starting scanner" << std::endl;
+      return (int) status;
     }
 
     std::this_thread::sleep_for(5s);
 
     status = core->stopScanning();
     if(status != Status::SUCCESS) {
-      throw std::runtime_error("ERROR stopping scanner");
+      std::cerr << "ERROR stopping scanner" << std::endl;
+      return (int) status;
     }
 
     viz->stop();
