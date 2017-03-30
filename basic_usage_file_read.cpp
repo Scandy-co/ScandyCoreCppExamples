@@ -27,7 +27,7 @@ using namespace std;
 
 using namespace std::chrono_literals;
 
-int main() {
+int main(int argc, char *argv[]) {
   scandy::core::Status status;
 
   // Create the ScandyCore instance with a Visualizer window of 400x400
@@ -46,8 +46,8 @@ int main() {
     throw std::runtime_error("ERROR creating ScandyCore");
   }
 
-  // Read in a Royale rrf file
-  status = core->initializeScanner(ScannerType::FILE, "test_file.rrf");
+  // Read in a Royale rrf file from the command line
+  status = core->initializeScanner(ScannerType::FILE, argv[1]);
   if(status != Status::SUCCESS) {
     throw std::runtime_error("ERROR could not read test file");
   }
