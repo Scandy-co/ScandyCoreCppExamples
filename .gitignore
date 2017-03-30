@@ -1,3 +1,4 @@
+# CMake generated files
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
@@ -5,3 +6,25 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+
+# C++ objects and libs
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
+
+
+# Builds
+build/
+*build-*
+
+# OSX cruft
+.DS_STORE
+
+# ScandyCore as a dependency
+dependencies/ScandyCore*
