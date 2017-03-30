@@ -20,26 +20,40 @@
 // include scandycore so we can make 3D magic happen
 #include <scandy/core/IScandyCore.h>
 
+#include <iostream>
+
 using namespace scandy::core;
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[]) {
   // Create the ScandyCore instance with a Visualizer window of 400x400
   auto core = IScandyCore::factoryCreate(400,400);
   if(!core) {
-    throw std::runtime_error("ERROR creating ScandyCore");
+    std::cerr << "ERROR creating ScandyCore" << std::endl;
+    return (int) scandy::core::Status::EXCEPTION_IN_HANDLER;;
   }
 
-  // load mesh
-  auto status = core->loadMesh("scandy.ply", "scandy-texture.png");
+  // load mesh from command line arguements
+  char *mesh_path = argv[1];
+  if( mesh_path == nullptr ){
+    std::cerr << "ERROR you must provide a path to the mesh" << std::endl;
+    return (int) scandy::core::Status::FILE_NOT_FOUND;;
+  }
+  char *texture_path = argv[2];
+  if( texture_path == nullptr ){
+    texture_path = "";
+  }
+  auto status = core->loadMesh(mesh_path, texture_path);
   if(status != Status::SUCCESS) {
-    throw std::runtime_error("ERROR could not read test files");
+    std::cerr << "ERROR could not read test files" << std::endl;
+    return (int) status;
   }
 
   // Get a reference to the ScandyCore Visualizer
   auto viz = core->getVisualizer();
   if(!viz) {
-    throw std::runtime_error("ERROR creating ScandyCore");
+    std::cerr << "ERROR getting ScandyCore Visualizer" << std::endl;
+    return (int) scandy::core::Status::NO_VISUALIZER_FOUND;
   }
 
   // Start the Visualizer. This will not return return until the window is closed by the user.
