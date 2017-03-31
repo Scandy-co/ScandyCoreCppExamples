@@ -45,6 +45,13 @@ target_link_libraries(SLAM_example
   ${ScandyCore_LIBRARIES}
 )
 
+# Create the SLAM_example executable
+add_executable(basic_usage_mesh_generate "basic_usage_mesh_generate.cpp")
+# Also link the ScandyCore libraries
+target_link_libraries(basic_usage_mesh_generate
+  ${ScandyCore_LIBRARIES}
+)
+
 # Create the basic_usage_mesh_read executable
 add_executable(basic_usage_mesh_read "basic_usage_mesh_read.cpp")
 # Also link the ScandyCore libraries

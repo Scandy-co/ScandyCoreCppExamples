@@ -10,10 +10,10 @@
 \****************************************************************************/
 
 /**
- * \file basic_usage_file_read.cpp
- * \brief Shows how to create a ScandyCore instance and read a Royale rrf file.
- * This basic_usage example shows to create a ScandyCore isntance and read a
- * Royale file. It then starts the visualizer and runs until closed
+ * \file basic_usage.cpp
+ * \brief Shows to create a ScandyCore isntance and attach a TestViewport to it.
+ * This basic_usage example shows to create a ScandyCore isntance and attach
+ * a TestViewport to it. It then starts the visualizer and runs until closed
  * by the user.
  */
 
@@ -22,15 +22,12 @@
 #include <scandy_license.h>
 
 #include <thread>
+#include <iostream>
 
 using namespace scandy::core;
 using namespace std;
 
-using namespace std::chrono_literals;
-
 int main(int argc, char *argv[]) {
-  scandy::core::Status status;
-
   // Create the ScandyCore instance with a Visualizer window of 400x400
   auto core = IScandyCore::factoryCreate(400,400);
   if(!core) {
@@ -38,44 +35,25 @@ int main(int argc, char *argv[]) {
     return (int) scandy::core::Status::EXCEPTION_IN_HANDLER;;
   }
 
-  // Add some callbacks.
-  core->onScannerStart = []() { std::cout << "Starting file playback";};
-  core->onScannerStop = []() { std::cout << "File playback stopped."; };
-
   // We need to set the ScandyCore license to our internal license
-  status = core->setLicense(scandy_core_license);
+  auto status = core->setLicense(scandy_core_license);
   if(status != Status::SUCCESS) {
     std::cerr << "ERROR could not set license" << std::endl;
     return (int) status;
   }
 
-  // get the view window
+  // read data from the attached the Pico Flex
+  status = core->initializeScanner(ScannerType::PICO_FLEXX);
+  if(status != Status::SUCCESS) {
+    std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
+    return (int) status;
+  }
+
+  // Get a reference to the ScandyCore Visualizer
   auto viz = core->getVisualizer();
   if(!viz) {
     std::cerr << "ERROR getting ScandyCore Visualizer" << std::endl;
     return (int) scandy::core::Status::NO_VISUALIZER_FOUND;
-  }
-
-  // Read in a Royale rrf file from the command line
-  if(argc >= 2) {
-    char *file_path = argv[1];
-    if( file_path == nullptr ){
-      std::cerr << "ERROR you must provide a path to the file" << std::endl;
-      return (int) scandy::core::Status::FILE_NOT_FOUND;;
-    }
-    status = core->initializeScanner(ScannerType::FILE, file_path);
-    if(status != Status::SUCCESS) {
-      std::cerr << "ERROR could not read test files" << std::endl;
-      return (int) status;
-    }
-  }
-  else {
-    // read data from the attached the Pico Flex
-    status = core->initializeScanner(ScannerType::PICO_FLEXX);
-    if(status != Status::SUCCESS) {
-      std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
-      return (int) status;
-    }
   }
 
   // Start SLAM to process the depth data in the rrf file.
@@ -91,7 +69,14 @@ int main(int argc, char *argv[]) {
       abort();
     }
 
-    std::this_thread::sleep_for(5s);
+    // continue to scan until user cancels
+    std::cout << "Press 'q' to stop scanning: ";
+    int ch;
+    do {
+      std::cin >> ch;
+      std::cout << ch;
+    }
+    while(ch != 'q');
 
     status = core->stopScanning();
     if(status != Status::SUCCESS) {
@@ -103,11 +88,38 @@ int main(int argc, char *argv[]) {
     viz->join();
   });
 
-  // Start the visualizer.
+  // Start the Visualizer. This will not return return until the window is closed by the user.
   viz->start();
 
-  // Release the slam_thread.
+  // The Visualizer will continue running until the window is closed by the user.
   slam_thread.join();
+
+  // create the mesh
+  status = core->createVisualizer(400,400, 1, 1);
+  if(status != Status::SUCCESS) {
+    std::cerr << "ERROR could not create visualizer" << std::endl;
+    return (int) status;
+  }
+  viz = core->getVisualizer();
+
+  // generate the mesh
+  status = core->generateMesh();
+  if(status != Status::SUCCESS) {
+    std::cerr << "ERROR could not generate mesh" << std::endl;
+    return (int) status;
+  }
+
+  // save mesh
+  status = core->saveMesh("temp.ply");
+  if(status != Status::SUCCESS) {
+    std::cerr << "ERROR could not save mesh" << std::endl;
+    return (int) status;
+  }
+
+  std::cout << "Saved mesh to foo.ply" << std::endl;
+
+  // view mesh
+  viz->start();
 
   return 0;
 }
