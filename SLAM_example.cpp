@@ -57,15 +57,25 @@ int main(int argc, char *argv[]) {
   }
 
   // Read in a Royale rrf file from the command line
-  char *file_path = argv[1];
-  if( file_path == nullptr ){
-    std::cerr << "ERROR you must provide a path to the file" << std::endl;
-    return (int) scandy::core::Status::FILE_NOT_FOUND;;
+  if(argc >= 2) {
+    char *file_path = argv[1];
+    if( file_path == nullptr ){
+      std::cerr << "ERROR you must provide a path to the file" << std::endl;
+      return (int) scandy::core::Status::FILE_NOT_FOUND;;
+    }
+    status = core->initializeScanner(ScannerType::FILE, file_path);
+    if(status != Status::SUCCESS) {
+      std::cerr << "ERROR could not read test files" << std::endl;
+      return (int) status;
+    }
   }
-  status = core->initializeScanner(ScannerType::FILE, file_path);
-  if(status != Status::SUCCESS) {
-    std::cerr << "ERROR could not read test files" << std::endl;
-    return (int) status;
+  else {
+    // read data from the attached the Pico Flex
+    status = core->initializeScanner(ScannerType::PICO_FLEXX);
+    if(status != Status::SUCCESS) {
+      std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
+      return (int) status;
+    }
   }
 
   // Start SLAM to process the depth data in the rrf file.
