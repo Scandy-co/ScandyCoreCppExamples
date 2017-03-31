@@ -71,7 +71,6 @@ int main(int argc, char *argv[]) {
   }
   else {
     // read data from the attached the Pico Flex
-    core->setEnableTrackingDebug(true);
     status = core->initializeScanner(ScannerType::PICO_FLEXX);
     if(status != Status::SUCCESS) {
       std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
