@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
     return (int) status;
   }
 
-  std::cout << "Saved mesh to foo.ply" << std::endl;
+  std::cout << "Saved mesh to temp.ply" << std::endl;
 
   // view mesh
   viz->start();
