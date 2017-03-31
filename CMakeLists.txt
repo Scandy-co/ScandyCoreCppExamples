@@ -38,10 +38,10 @@ target_link_libraries(basic_usage
   ${ScandyCore_LIBRARIES}
 )
 
-# Create the basic_usage_file_read executable
-add_executable(basic_usage_file_read "basic_usage_file_read.cpp")
+# Create the SLAM_example executable
+add_executable(SLAM_example "SLAM_example.cpp")
 # Also link the ScandyCore libraries
-target_link_libraries(basic_usage_file_read
+target_link_libraries(SLAM_example
   ${ScandyCore_LIBRARIES}
 )
 
