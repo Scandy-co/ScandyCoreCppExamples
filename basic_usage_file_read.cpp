@@ -19,6 +19,7 @@
 
 // include scandycore so we can make 3D magic happen
 #include <scandy/core/IScandyCore.h>
+#include <scandy_license.h>
 
 #include <thread>
 
@@ -40,6 +41,13 @@ int main(int argc, char *argv[]) {
   // Add some callbacks.
   core->onScannerStart = []() { std::cout << "Starting file playback";};
   core->onScannerStop = []() { std::cout << "File playback stopped."; };
+
+  // We need to set the ScandyCore license to our internal license
+  status = core->setLicense(scandy_core_license);
+  if(status != Status::SUCCESS) {
+    std::cerr << "ERROR could not set license" << std::endl;
+    return (int) status;
+  }
 
   // get the view window
   auto viz = core->getVisualizer();
