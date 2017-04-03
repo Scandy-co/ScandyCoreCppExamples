@@ -11,8 +11,8 @@
 
 /**
  * \file basic_usage.cpp
- * \brief Shows to create a ScandyCore isntance and attach a TestViewport to it.
- * This basic_usage example shows to create a ScandyCore isntance and attach
+ * \brief Shows to create a ScandyCore instance and attach a TestViewport to it.
+ * This basic_usage example shows to create a ScandyCore instance and attach
  * a TestViewport to it. It then starts the visualizer and runs until closed
  * by the user.
  */
