@@ -21,6 +21,8 @@
 #include <scandy/core/IScandyCore.h>
 #include <scandy_license.h>
 
+#include <vtkPLYWriter.h>
+
 #include <thread>
 #include <chrono>
 #include <cmath>

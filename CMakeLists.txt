@@ -51,3 +51,10 @@ add_executable(basic_usage_mesh_read "basic_usage_mesh_read.cpp")
 target_link_libraries(basic_usage_mesh_read
   ${ScandyCore_LIBRARIES}
 )
+
+# Create the basic_usage_mesh_read executable
+add_executable(read_point_cloud "read_point_cloud.cpp")
+# Also link the ScandyCore libraries
+target_link_libraries(read_point_cloud
+  ${ScandyCore_LIBRARIES}
+)
