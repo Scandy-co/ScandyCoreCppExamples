@@ -5,7 +5,7 @@ A set of examples of how to use Scandy Core in a headless Cpp application
 
 ## Step 1: C++ compiler
 
-* OSX: install Xcode (sorry there's handy one-liner here...)
+* OSX: install Xcode (sorry there's no handy one-liner here...)
 * Ubuntu: `sudo apt-get install build-essential`
 
 ## Step 2: CMake
