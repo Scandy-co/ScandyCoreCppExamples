@@ -21,7 +21,11 @@
 #include <scandy/core/IScandyCore.h>
 #include <scandy_license.h>
 
+// Include some vtk pieces for getting PolyData and saving it to a PLY
+#include <vtkNew.h>
+#include <vtkSmartPointer.h>
 #include <vtkPLYWriter.h>
+#include <vtkPolyData.h>
 
 #include <thread>
 #include <chrono>
@@ -85,6 +89,9 @@ int main(int argc, char *argv[]) {
       }
 
       last = now;
+    }
+    catch( std::exception &e ) {
+      std::cerr << "Exception in writing the point cloud to file: " << e.what() << std::endl;
     }
   };
 
