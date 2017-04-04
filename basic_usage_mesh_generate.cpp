@@ -71,10 +71,9 @@ int main(int argc, char *argv[]) {
 
     // continue to scan until user cancels
     std::cout << "Press 'q' to stop scanning: ";
-    int ch;
+    char ch;
     do {
       std::cin >> ch;
-      std::cout << ch;
     }
     while(ch != 'q');
 
