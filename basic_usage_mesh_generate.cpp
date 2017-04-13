@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
     return (int) status;
   }
 
-  // read data from the attached the Pico Flex
+  // read data from the attached the pico flexx
   status = core->initializeScanner(ScannerType::PICO_FLEXX);
   if(status != Status::SUCCESS) {
-    std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
+    std::cerr << "ERROR could not find attached USB pico flexx depth sensor" << std::endl;
     return (int) status;
   }
 
