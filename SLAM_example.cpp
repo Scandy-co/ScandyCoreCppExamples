@@ -17,7 +17,7 @@
  * by the user.
  */
 
-// include scandycore so we can make 3D magic happen
+// include ScandyCore so we can make 3D magic happen
 #include <scandy/core/IScandyCore.h>
 #include <scandy_license.h>
 
@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
     }
   }
   else {
-    // read data from the attached the Pico Flex
+    // read data from the attached pico flexx
     status = core->initializeScanner(ScannerType::PICO_FLEXX);
     if(status != Status::SUCCESS) {
       std::cerr << "ERROR could not find attached usb Pico Flexx depth sensor" << std::endl;
