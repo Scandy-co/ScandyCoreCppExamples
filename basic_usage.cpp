@@ -17,7 +17,7 @@
  * by the user.
  */
 
-// include scandycore so we can make 3D magic happen
+// include ScandyCore so we can make 3D magic happen
 #include <scandy/core/IScandyCore.h>
 #include <scandy/core/visualizer/TestViewport.h>
 
