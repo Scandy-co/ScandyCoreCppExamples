@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     const scandy::utilities::float3* point_cloud_data,
     const int width,
     const int height,
-    const scandy::utilities::PointCloudMetaData frame_metadata) {
+    const scandy::utilities::DepthTrackMetaData frame_metadata) {
 
     try {
       auto now = std::chrono::system_clock::now();
